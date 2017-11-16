@@ -1,7 +1,7 @@
 import discord
 import json, re, requests
 
-#Example: http://api.wunderground.com/api/dca6949ac57f1267/geolookup/conditions/q/NC/charlotte.json
+#Example: http://api.wunderground.com/api/dc<key>7f1267/geolookup/conditions/q/NC/charlotte.json
 rest_url = 'http://api.wunderground.com/api/'
 client = discord.Client()
 
@@ -64,7 +64,7 @@ async def on_message(message):
     if 'weather in' in message.content:
         await client.send_message(message.channel, weatherIn(command))
     
-    if 'the weather' in message.content or 'weather right now' in message.content:
+    if ('the weather' in message.content or 'weather right now' in message.content) and 'see' not in message.content:
         await client.send_message(message.channel, wInfoShort())
 
 def main():
