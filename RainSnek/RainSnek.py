@@ -7,7 +7,6 @@ client = discord.Client()
 
 '''
     Planned features:
-    New_york can be typed New York when being searched
     5 day forcasts
 '''
 
@@ -44,11 +43,19 @@ def wInfoShort(state = 'NC', city = 'charlotte'):
         return "Error, I couldnt find: " + str(state) + " or " + str(city)
 
 def weatherIn(message = ""):
-    city = re.findall('weather in (.*)[$|\s]', message)[0]
 
-    try:
-        state = re.findall(('weather in ' + city + ' (.*)'), message)[0]
-    except:
+    location = re.findall('weather in (.*)', message)[0].split(" ")
+
+    if len(location) > 1:
+        city = location[0]
+        
+        if len(location) > 2:
+            for word in location[1:len(location) - 1]:  
+                city += ("_" + word)
+
+        state = location[len(location) - 1]
+    else:
+        city = location[0]
         state = 'NC'
 
     return wInfoShort(state, city)
@@ -61,17 +68,20 @@ async def on_message(message):
             await client.send_message(message.channel, wInfoShort())
         elif 'weather in' in command:
             await client.send_message(message.channel, weatherIn(command))
+        else:
+            await client.send_message(message.channel, "Oooh Hi")
+        return
+
     if 'weather in' in message.content:
-        await client.send_message(message.channel, weatherIn(command))
-    
-    if ('the weather' in message.content or 'weather right now' in message.content) and 'see' not in message.content:
+        await client.send_message(message.channel, weatherIn(message.content))
+    elif ('the weather' in message.content or 'weather right now' in message.content) and 'see' not in message.content:
         await client.send_message(message.channel, wInfoShort())
 
 def main():
-    #print(wInfoShort())
+    #print(wInfoShort())'
 
-    client.run(globalVars.apiKeys['discord'])
     print("Online")
+    client.run(globalVars.apiKeys['discord'])
     return
 
 if __name__ == '__main__':
