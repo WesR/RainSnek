@@ -3,8 +3,10 @@ import json, re, requests
 
 #Example: http://api.wunderground.com/api/dc<key>7f1267/geolookup/conditions/q/NC/charlotte.json
 rest_url = 'http://api.wunderground.com/api/'
-client = discord.Client()
+defaultCity = 'Charlotte'
+defaultState = 'NC'
 
+client = discord.Client()
 '''
     Planned features:
     5 day forcasts
@@ -22,16 +24,16 @@ def loadKeys():
     print("Loaded API keys")
 
 
-def fetch_weather(state = 'NC', city = 'charlotte'):
+def fetch_weather(state = defaultState, city = defaultCity):
     print("Fetching weather from " + city + ", " + state)
     r = requests.get(rest_url + globalVars.apiKeys["wunderground"] + "/forecast/conditions/q/" 
                      + state.replace(" ", "_") + "/" + city.replace(" ", "_") + ".json")
     return r.json()
 
-def wInfoLong(state = 'NC', city = 'charlotte'):
+def wInfoLong(state = defaultState, city = defaultCity):
     return
 
-def wInfoShort(state = 'NC', city = 'charlotte'):
+def wInfoShort(state = defaultState, city = defaultCity):
     message = fetch_weather(state, city)
     try:
         fLocation = message['current_observation']['display_location']['full']
@@ -56,7 +58,7 @@ def weatherIn(message = ""):
         state = location[len(location) - 1]
     else:
         city = location[0]
-        state = 'NC'
+        state = defaultState
 
     return wInfoShort(state, city)
 
