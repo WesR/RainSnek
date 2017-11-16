@@ -1,7 +1,15 @@
 # RainSnek
 a Discord bot that uses wunderground's API to tell you the weather.
 
+## Triggers:
+1. @<botname> weather (ex whats the weather (uses default city and state))
+2. @<botname> weather in (ex whats the weather in toronto canada (defaults the state to NC if not specified))
+### Usage in conversation of
+1. "weather in" (fetches city and or state)
+2. "the weather" (uses default city and state)
 
+
+---------
 apiKeys.json should look like:
 
 ```
@@ -9,10 +17,9 @@ apiKeys.json should look like:
     "discord": "MzgspecialdiscordcodeKt0thatskindalongrcYanddoesthings",
     "wunderground": "yourspecialcode"
 }
-
 ```
 
-
+--------
 Copyright 2017 Wesley Ring
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
