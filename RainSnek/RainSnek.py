@@ -63,8 +63,13 @@ def weatherIn(message = ""):
     return wInfoShort(state, city)
 
 @client.event
+async def on_ready():
+    print("Online")
+
+@client.event
 async def on_message(message):
     if message.content.startswith('<@' + client.user.id + ">"):
+        await client.send_typing(message.channel)
         command = message.content.split('<@' + client.user.id + ">")[1].strip().rstrip().lower()
         if 'weather' in command and 'in' not in command:
             await client.send_message(message.channel, wInfoShort())
@@ -77,16 +82,15 @@ async def on_message(message):
     formattedMessage = message.content.lower()
 
     if 'weather in' in formattedMessage:
+        await client.send_typing(message.channel)
         await client.send_message(message.channel, weatherIn(formattedMessage))
     elif ('the weather' in formattedMessage or 'weather right now' in formattedMessage) and 'see' not in formattedMessage:
+        await client.send_typing(message.channel)
         await client.send_message(message.channel, wInfoShort())
 
 def main():
     #print(wInfoShort())'
-
-    print("Online")
     client.run(globalVars.apiKeys['discord'])
-    return
 
 if __name__ == '__main__':
     loadKeys()
