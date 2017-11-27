@@ -65,7 +65,7 @@ def weatherIn(message = ""):
 @client.event
 async def on_message(message):
     if message.content.startswith('<@' + client.user.id + ">"):
-        command = message.content.split('<@' + client.user.id + ">")[1].strip().rstrip()
+        command = message.content.split('<@' + client.user.id + ">")[1].strip().rstrip().lower()
         if 'weather' in command and 'in' not in command:
             await client.send_message(message.channel, wInfoShort())
         elif 'weather in' in command:
@@ -74,9 +74,11 @@ async def on_message(message):
             await client.send_message(message.channel, "Oooh Hi")
         return
 
-    if 'weather in' in message.content:
-        await client.send_message(message.channel, weatherIn(message.content))
-    elif ('the weather' in message.content or 'weather right now' in message.content) and 'see' not in message.content:
+    formattedMessage = message.content.lower()
+
+    if 'weather in' in formattedMessage:
+        await client.send_message(message.channel, weatherIn(formattedMessage))
+    elif ('the weather' in formattedMessage or 'weather right now' in formattedMessage) and 'see' not in formattedMessage:
         await client.send_message(message.channel, wInfoShort())
 
 def main():
