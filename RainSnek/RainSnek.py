@@ -65,6 +65,7 @@ def weatherIn(message = ""):
 @client.event
 async def on_ready():
     print("Online")
+    await client.change_status(game=discord.Game(name='Counting Clouds'))
 
 @client.event
 async def on_message(message):
