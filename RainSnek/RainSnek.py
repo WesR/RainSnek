@@ -44,6 +44,12 @@ def fetch_sat(state = defaultState, city = defaultCity):
                      + state.replace(" ", "_") + "/" + city.replace(" ", "_") + ".gif?newmaps=1&timelabel=1&timelabel.y=10&num=15&delay=25")
     return BytesIO(r.content)
 
+def fetch_alerts(state = defaultState, city = defaultCity):
+    print("Fetching weather from " + city + ", " + state)
+    r = requests.get(rest_url + globalVars.apiKeys["wunderground"] + "/alerts/q/" 
+                     + state.replace(" ", "_") + "/" + city.replace(" ", "_") + ".json")
+    return r.json()
+
 def wInfoLong(state = defaultState, city = defaultCity):
     return
 
@@ -97,6 +103,18 @@ def wInfoTodayHL(state = defaultState, city = defaultCity):
         print(str(message))
         return "Error, I couldnt find: " + str(state) + " or " + str(city)
 
+def wInfoAlert(state = defaultState, city = defaultCity):
+    message = fetch_alerts(state, city)
+    try:
+        resp = ''
+        for alert in message['alerts']:
+            resp += alert['description'] + '\n' + alert['date'] + '\n' + alert['message'].split('\n\n\n')[0]
+            resp += '\n'
+        return resp
+    except:
+        print(str(message))
+        return "Error, I couldnt find: " + str(state) + " or " + str(city)
+
 def wInfoTodayRadar(state = defaultState, city = defaultCity):
     try:
         return fetch_radar(state, city)
@@ -140,24 +158,26 @@ async def on_message(message):
     if message.content.startswith('<@' + client.user.id + ">"):
         await client.send_typing(message.channel)
         command = message.content.split('<@' + client.user.id + ">")[1].strip().rstrip().lower()
-        if 'weather' in command and 'in' not in command:
-            await client.send_message(message.channel, wInfoShort())
-        elif 'weather in' in command:
+        if 'weather in' in command:
             await client.send_message(message.channel, weatherIn(command))
-        elif ('tonight' in command and 'in' not in command):
+        elif ('weather alert' in command):
+            await client.send_message(message.channel, wInfoAlert())
+        elif 'weather' in command:
+            await client.send_message(message.channel, wInfoShort())
+        elif ('tonight' in command):
             await client.send_message(message.channel, wInfoNextTwo())
-        elif ('this week' in command and 'in' not in command):
+        elif ('this week' in command):
             await client.send_message(message.channel, wInfoFullThree())
-        elif ('today' in command and 'in' not in command):
+        elif ('today' in command):
             await client.send_message(message.channel, wInfoNextTwo())
-        elif ('the high today' in command or 'the low today' in command) and 'see' not in command:
+        elif ('the high today' in command or 'the low today' in command):
             await client.send_message(message.channel, wInfoTodayHL())
-        elif ('radar' in command) and 'see' not in command:
-            await client.send_typing(message.channel)
+        elif ('radar' in command):
             await client.send_file(message.channel, wInfoTodayRadar() ,filename='Radar_image.gif')
-        elif ('satellite' in command) and 'see' not in command:
-            await client.send_typing(message.channel)
+        elif ('satellite' in command):
             await client.send_file(message.channel, wInfoTodaySat() ,filename='Radar_image.gif')
+        elif ('weather alert' in command):
+            await client.send_message(message.channel, wInfoAlert())
         else:
             await client.send_message(message.channel, "Hello friend")
         return
@@ -167,6 +187,9 @@ async def on_message(message):
     if 'weather in' in formattedMessage:
         await client.send_typing(message.channel)
         await client.send_message(message.channel, weatherIn(formattedMessage))
+    elif ('weather alert' in formattedMessage) and 'see' not in formattedMessage:
+        await client.send_typing(message.channel)
+        await client.send_message(message.channel, wInfoAlert())
     elif ('the weather' in formattedMessage or 'weather right now' in formattedMessage) and 'see' not in formattedMessage:
         await client.send_typing(message.channel)
         if ('tonight' in formattedMessage):
