@@ -206,7 +206,7 @@ async def on_message(message):
     elif ('weather radar' in formattedMessage) and 'see' not in formattedMessage:
         await client.send_typing(message.channel)
         await client.send_file(message.channel, wInfoTodayRadar() ,filename='Radar_image.gif')
-    elif ('weather sat ' in formattedMessage or 'the satellite' in formattedMessage) and 'see' not in formattedMessage:
+    elif ('weather sat' in formattedMessage) and 'see' not in formattedMessage:
         await client.send_typing(message.channel)
         await client.send_file(message.channel, wInfoTodaySat() ,filename='Sat_image.gif')
 
