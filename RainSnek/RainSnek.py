@@ -1,7 +1,6 @@
 import discord
 from beautifultable import BeautifulTable
 import json, re, requests
-from PIL import Image
 from io import BytesIO
 
 #Example: http://api.wunderground.com/api/dc<key>7f1267/geolookup/conditions/q/NC/charlotte.json
