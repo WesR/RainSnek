@@ -121,7 +121,7 @@ async def on_message(message):
             await client.send_message(message.channel, wInfoFullThree())
         elif ('today' in command and 'in' not in command):
             await client.send_message(message.channel, wInfoNextTwo())
-        elif ('the high today' in formattedMessage or 'the low today' in formattedMessage) and 'see' not in formattedMessage:
+        elif ('the high today' in command or 'the low today' in command) and 'see' not in command:
             await client.send_message(message.channel, wInfoTodayHL())
         else:
             await client.send_message(message.channel, "Hello friend")
