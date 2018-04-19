@@ -174,7 +174,7 @@ async def on_message(message):
             await client.send_message(message.channel, wInfoTodayHL())
         elif ('radar' in command):
             await client.send_file(message.channel, wInfoTodayRadar() ,filename='Radar_image.gif')
-        elif ('satellite' in command or ' sat ' in command):
+        elif ('satellite' in command or 'sat' in command):
             await client.send_file(message.channel, wInfoTodaySat() ,filename='Sat_image.gif')
         elif ('weather alert' in command):
             await client.send_message(message.channel, wInfoAlert())
@@ -206,7 +206,7 @@ async def on_message(message):
     elif ('weather radar' in formattedMessage) and 'see' not in formattedMessage:
         await client.send_typing(message.channel)
         await client.send_file(message.channel, wInfoTodayRadar() ,filename='Radar_image.gif')
-    elif ('the sat ' in formattedMessage or 'the satellite' in formattedMessage) and 'see' not in formattedMessage:
+    elif ('weather sat ' in formattedMessage or 'the satellite' in formattedMessage) and 'see' not in formattedMessage:
         await client.send_typing(message.channel)
         await client.send_file(message.channel, wInfoTodaySat() ,filename='Sat_image.gif')
 
