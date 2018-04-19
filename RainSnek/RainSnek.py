@@ -1,6 +1,8 @@
 import discord
 from beautifultable import BeautifulTable
 import json, re, requests
+from PIL import Image
+from io import BytesIO
 
 #Example: http://api.wunderground.com/api/dc<key>7f1267/geolookup/conditions/q/NC/charlotte.json
 rest_url = 'http://api.wunderground.com/api/'
@@ -30,6 +32,18 @@ def fetch_weather(state = defaultState, city = defaultCity):
     r = requests.get(rest_url + globalVars.apiKeys["wunderground"] + "/forecast/conditions/q/" 
                      + state.replace(" ", "_") + "/" + city.replace(" ", "_") + ".json")
     return r.json()
+
+def fetch_radar(state = defaultState, city = defaultCity):
+    print("Fetching weather from " + city + ", " + state)
+    r = requests.get(rest_url + globalVars.apiKeys["wunderground"] + "/animatedradar/q/" 
+                     + state.replace(" ", "_") + "/" + city.replace(" ", "_") + ".gif?newmaps=1&timelabel=1&timelabel.y=10&num=15&delay=25")
+    return BytesIO(r.content)
+
+def fetch_sat(state = defaultState, city = defaultCity):
+    print("Fetching weather from " + city + ", " + state)
+    r = requests.get(rest_url + globalVars.apiKeys["wunderground"] + "/animatedsatellite/q/" 
+                     + state.replace(" ", "_") + "/" + city.replace(" ", "_") + ".gif?newmaps=1&timelabel=1&timelabel.y=10&num=15&delay=25")
+    return BytesIO(r.content)
 
 def wInfoLong(state = defaultState, city = defaultCity):
     return
@@ -84,6 +98,20 @@ def wInfoTodayHL(state = defaultState, city = defaultCity):
         print(str(message))
         return "Error, I couldnt find: " + str(state) + " or " + str(city)
 
+def wInfoTodayRadar(state = defaultState, city = defaultCity):
+    try:
+        return fetch_radar(state, city)
+    except:
+        print("RADAR ERROR")
+        return "Error, I couldnt find: " + str(state) + " or " + str(city)
+
+def wInfoTodaySat(state = defaultState, city = defaultCity):
+    try:
+        return fetch_sat(state, city)
+    except:
+        print("RADAR ERROR")
+        return "Error, I couldnt find: " + str(state) + " or " + str(city)
+
 def weatherIn(message = ""):
 
     location = re.findall('weather in (.*)', message)[0].split(" ")
@@ -125,6 +153,12 @@ async def on_message(message):
             await client.send_message(message.channel, wInfoNextTwo())
         elif ('the high today' in command or 'the low today' in command) and 'see' not in command:
             await client.send_message(message.channel, wInfoTodayHL())
+        elif ('radar' in command) and 'see' not in command:
+            await client.send_typing(message.channel)
+            await client.send_file(message.channel, wInfoTodayRadar() ,filename='Radar_image.gif')
+        elif ('satellite' in command) and 'see' not in command:
+            await client.send_typing(message.channel)
+            await client.send_file(message.channel, wInfoTodaySat() ,filename='Radar_image.gif')
         else:
             await client.send_message(message.channel, "Hello friend")
         return
@@ -147,6 +181,12 @@ async def on_message(message):
     elif ('the high today' in formattedMessage or 'the low today' in formattedMessage) and 'see' not in formattedMessage:
         await client.send_typing(message.channel)
         await client.send_message(message.channel, wInfoTodayHL())
+    elif ('radar' in formattedMessage) and 'see' not in formattedMessage:
+        await client.send_typing(message.channel)
+        await client.send_file(message.channel, wInfoTodayRadar() ,filename='Radar_image.gif')
+    elif ('the sat' in formattedMessage or 'satellite' in formattedMessage) and 'see' not in formattedMessage:
+        await client.send_typing(message.channel)
+        await client.send_file(message.channel, wInfoTodaySat() ,filename='Radar_image.gif')
 
 def main():
     #print(wInfoShort())'
