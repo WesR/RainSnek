@@ -54,7 +54,8 @@ def wInfoFullThree(state = defaultState, city = defaultCity):
         table = BeautifulTable()
         table.column_headers = ["Time","Precip","Forecast"]
         for time in message['forecast']['txt_forecast']['forecastday']:
-            table.append_row([time['title'],time['pop'] + '%',time['fcttext']])
+            if 'Night' not in time['title']:
+                table.append_row([time['title'],time['pop'] + '%',time['fcttext']])
         return  str('```' + str(table) + '```')
     except:
         print(str(message))
@@ -104,7 +105,8 @@ def weatherIn(message = ""):
 @client.event
 async def on_ready():
     print("Online")
-    await client.change_status(game=discord.Game(name='Counting Clouds'))
+    await client.change_presence(game=discord.Game(name='Counting Clouds'))
+
 
 @client.event
 async def on_message(message):
