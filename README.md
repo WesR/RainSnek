@@ -15,7 +15,9 @@ apiKeys.json should look like:
 ```
 {
     "discord": "MzgspecialdiscordcodeKt0thatskindalongrcYanddoesthings",
-    "wunderground": "yourspecialcode"
+    "wunderground": "yourspecialcode",
+    "fileUrl": "https://wesring.com/RainSnek.py",
+    "ownerid":  "01189998819991197253"
 }
 ```
 
