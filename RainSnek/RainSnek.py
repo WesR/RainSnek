@@ -196,7 +196,7 @@ async def on_message(message):
             await client.send_message(message.channel, version)
         elif ('reload' in command and message.author.id == globalVars.apiKeys["ownerid"]):
             await client.send_message(message.channel, "Restarting...")
-            if reloadFromGit():
+            if reloadFile():
                 quit()
             else:
                 await client.send_message(message.channel, "Update Failed")
