@@ -1,7 +1,7 @@
 import discord
 from beautifultable import BeautifulTable
 import json, re, requests
-import os
+import os, sys
 from io import BytesIO
 
 #Example: http://api.wunderground.com/api/dc<key>7f1267/geolookup/conditions/q/NC/charlotte.json
