@@ -8,6 +8,7 @@ from io import BytesIO
 rest_url = 'http://api.wunderground.com/api/'
 defaultCity = 'Charlotte'
 defaultState = 'NC'
+version = '1.25'
 
 client = discord.Client()
 '''
@@ -191,6 +192,8 @@ async def on_message(message):
             await client.send_file(message.channel, wInfoTodaySat() ,filename='Sat_image.gif')
         elif ('weather alert' in command):
             await client.send_message(message.channel, wInfoAlert())
+        elif ('version' in command):
+            await client.send_message(message.channel, version)
         elif ('reload' in command and message.author.id == globalVars.apiKeys["ownerid"]):
             await client.send_message(message.channel, "Restarting...")
             if reloadFromGit():
