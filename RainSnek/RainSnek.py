@@ -8,7 +8,7 @@ from io import BytesIO
 rest_url = 'http://api.wunderground.com/api/'
 defaultCity = 'Charlotte'
 defaultState = 'NC'
-version = '1.26.1'
+version = '1.27'
 
 client = discord.Client()
 '''
@@ -197,9 +197,10 @@ async def on_message(message):
         elif ('version' in command):
             await client.send_message(message.channel, version)
         elif ('reload' in command and message.author.id == globalVars.apiKeys["ownerid"]):
-            await client.send_message(message.channel, "Restarting...")
+            await client.send_message(message.channel, "Downloading...")
             if reloadFile():
-                quit()
+                await client.send_message(message.channel, "Restarting...")
+                sys.exit()
             else:
                 await client.send_message(message.channel, "Update Failed")
         else:
