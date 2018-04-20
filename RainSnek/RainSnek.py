@@ -1,6 +1,7 @@
 import discord
 from beautifultable import BeautifulTable
 import json, re, requests
+import os
 from io import BytesIO
 
 #Example: http://api.wunderground.com/api/dc<key>7f1267/geolookup/conditions/q/NC/charlotte.json
@@ -25,6 +26,18 @@ def loadKeys():
         globalVars.apiKeys = json.load(data)
     print("Loaded API keys")
 
+def reloadFile():
+    print("Reloading the file")
+    fileName = "RainSnek.py"
+
+    r = requests.get(globalVars.apiKeys["fileUrl"])
+
+    with open(fileName, "wb") as f: 
+        f.write(r.content)
+
+    if (os.stat(fileName).st_size >= 100):
+        return True
+    return False
 
 def fetch_weather(state = defaultState, city = defaultCity):
     print("Fetching weather from " + city + ", " + state)
@@ -178,6 +191,12 @@ async def on_message(message):
             await client.send_file(message.channel, wInfoTodaySat() ,filename='Sat_image.gif')
         elif ('weather alert' in command):
             await client.send_message(message.channel, wInfoAlert())
+        elif ('reload' in command and message.author.id == globalVars.apiKeys["ownerid"]):
+            await client.send_message(message.channel, "Restarting...")
+            if reloadFromGit():
+                quit()
+            else:
+                await client.send_message(message.channel, "Update Failed")
         else:
             await client.send_message(message.channel, "Hello friend")
         return
