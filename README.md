@@ -37,7 +37,7 @@ apiKeys.json should look like:
 --------
 
 ## Security Concerns:
-1. The reload command should be only run by the owner of the bot. If the url that its pulling from is compromised, that data will be written to disk. This can be fixed by signing the releases.
+1. The reload command should be only run by the owner of the bot. If the url that it is pulling from becomes compromised, that data will be written to disk. (And exicuted by any shell programs / cron jobs you have) This can be fixed by signing (and verifying )the releases.
 
 --------
 Copyright 2017 Wesley Ring
