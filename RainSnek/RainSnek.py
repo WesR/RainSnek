@@ -33,6 +33,8 @@ def reloadFile():
 
     r = requests.get(globalVars.apiKeys["fileUrl"])
 
+    os.remove(fileName)
+
     with open(fileName, "wb") as f: 
         f.write(r.content)
 
