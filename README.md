@@ -3,11 +3,24 @@ a Discord bot that uses wunderground's API to tell you the weather.
 
 ## Triggers:
 1. @<botname> weather (ex whats the weather (uses default city and state))
+    * "tonight" (whats the weather tonight)
+    * "today" (Whats the weather today)
+    * "this week" (whats the weather this week)
 2. @<botname> weather in (ex whats the weather in toronto canada (defaults the state to NC if not specified))
+3. @<botname> "the high" or "the low" (Displays todays high and low)
+4. @<botname> "sat" or "satellite" (Display the local satellite)
+5. @<botname> "radar" (Display the local radar)
+6. @<botname> "version" (Display the bot version)
+5. @<botname> "reload" (Download the new bot, then exit) (must be whitelisted)
 ### Usage in conversation of
 1. "weather in" (fetches city and or state)
 2. "the weather" (uses default city and state)
-
+    * "tonight" (whats the weather tonight)
+    * "today" (Whats the weather today)
+    * "this week" (whats the weather this week)
+3. "the high today" or "the low today" (Displays todays high and low)
+4. "weather sat" (Display the local satellite)
+5. "weather radar" (Display the local radar)
 
 ---------
 apiKeys.json should look like:
