@@ -8,7 +8,7 @@ from io import BytesIO
 rest_url = 'http://api.wunderground.com/api/'
 defaultCity = 'Charlotte'
 defaultState = 'NC'
-version = '1.30'
+version = '1.38'
 
 client = discord.Client()
 '''
