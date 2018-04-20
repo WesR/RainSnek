@@ -35,6 +35,11 @@ apiKeys.json should look like:
 ```
 
 --------
+
+## Security Concerns:
+1. The reload command should be only run by the owner of the bot. If the url that its pulling from is compromised, that data will be written to disk. This can be fixed by signing the releases.
+
+--------
 Copyright 2017 Wesley Ring
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
