@@ -8,12 +8,13 @@ from io import BytesIO
 rest_url = 'http://api.wunderground.com/api/'
 defaultCity = 'Charlotte'
 defaultState = 'NC'
-version = '1.38'
+version = '1.39'
 
 client = discord.Client()
 '''
     Planned features:
-    5 day forcasts
+    redo commands
+    Fix location not found for gif getters
 '''
 
 
@@ -163,6 +164,24 @@ def weatherIn(message = ""):
 
     return wInfoShort(state, city)
 
+def getLocation(message = ""):
+
+    location = re.findall('weather .* in (.*)', message)[0].split(" ")
+
+    if len(location) > 1:
+        city = location[0]
+        
+        if len(location) > 2:
+            for word in location[1:len(location) - 1]:  
+                city += ("_" + word)
+
+        state = location[len(location) - 1]
+    else:
+        city = location[0]
+        state = defaultState
+
+    return [state, city]
+
 @client.event
 async def on_ready():
     print("Online")
@@ -230,10 +249,18 @@ async def on_message(message):
         await client.send_message(message.channel, wInfoTodayHL())
     elif ('weather radar' in formattedMessage) and 'see' not in formattedMessage:
         await client.send_typing(message.channel)
-        await client.send_file(message.channel, wInfoTodayRadar() ,filename='Radar_image.gif')
+        if ('in' in formattedMessage):
+            location = getLocation(formattedMessage)
+            await client.send_file(message.channel, wInfoTodayRadar(location[0], location[1]) ,filename='Radar_image.gif')  #fix this.  y u repeat
+        else:
+            await client.send_file(message.channel, wInfoTodayRadar() ,filename='Radar_image.gif')
     elif ('weather sat' in formattedMessage) and 'see' not in formattedMessage:
         await client.send_typing(message.channel)
-        await client.send_file(message.channel, wInfoTodaySat() ,filename='Sat_image.gif')
+        if ('in' in formattedMessage):
+            location = getLocation(formattedMessage)
+            await client.send_file(message.channel, wInfoTodaySat(location[0], location[1]) ,filename='Sat_image.gif')  #fix this.  y u repeat
+        else:
+            await client.send_file(message.channel, wInfoTodaySat() ,filename='Sat_image.gif')
 
 def main():
     #print(wInfoShort())'
